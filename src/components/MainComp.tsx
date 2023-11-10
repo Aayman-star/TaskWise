@@ -10,12 +10,21 @@ import { Card, CardContent } from "./ui/card";
 import TestText from "./TestText";
 import { RevealWrapper } from "next-reveal";
 import { Input } from "./ui/input";
+import { Check } from "lucide-react";
+import { FcCheckmark } from "react-icons/fc";
+import { FaRegTrashAlt } from "react-icons/fa";
+import TaskToDo from "./TaskToDo";
 
+interface tasks {
+  id: number;
+  taskText: string;
+  isChecked: boolean;
+}
 const MainComp = () => {
   const { theme, setTheme } = useTheme();
 
   //This is for the Actual Task
-  const [task, setTask] = useState<string>("");
+  const [task, setTask] = useState<tasks[]>([]);
 
   //This is for the text that is enetered in the user input field
   const [text, setText] = useState<string>("");
@@ -26,7 +35,13 @@ const MainComp = () => {
     //This is just displaying the text in the console
     console.log(text);
     //Setting text taken from the input field to the state variable task
-    setTask(text);
+    const singleTask: tasks = {
+      id: task.length + 1,
+      taskText: text,
+      isChecked: false,
+    };
+    console.log(singleTask);
+    setTask([...task, singleTask]);
     //Setting the input field to empty string again
     setText("");
   };
@@ -35,11 +50,14 @@ const MainComp = () => {
   //   const text = temp;
   //   console.log(text);
   // };
+  const deleteTask = (index: number) => {
+    setTask(task.filter((t) => t.id !== index));
+  };
 
   return (
     <div className={theme}>
       <div className="bg-background w-full min-h-screen md:max-w-7xl mx-auto border-r border-l border-2-foreground">
-        <div className="flex flex-col items-center gap-4 md:mb-10">
+        <div className="flex flex-col items-center gap-4 md:gap-6 md:mb-10">
           <form
             method="post"
             onSubmit={handleSubmit}
@@ -50,15 +68,17 @@ const MainComp = () => {
               onChange={(e) => setText(e.target.value)}
               placeholder="Enter the task..."
             />
-            <Button size="default" type="submit">
+            <Button
+              variant={theme === "light" ? "default" : "secondary"}
+              size="default"
+              type="submit">
               Task+
             </Button>
           </form>
-          {task && (
-            <Card className="w-1/3 self-center">
-              <CardContent className="p-2">{task}</CardContent>
-            </Card>
-          )}
+          {task.length > 0 &&
+            task.map((task, i) => (
+              <TaskToDo {...task} deleteFunction={deleteTask} />
+            ))}
         </div>
       </div>
     </div>
