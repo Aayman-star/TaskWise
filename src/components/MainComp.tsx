@@ -14,6 +14,8 @@ import { Check } from "lucide-react";
 import { FcCheckmark } from "react-icons/fc";
 import { FaRegTrashAlt } from "react-icons/fa";
 import TaskToDo from "./TaskToDo";
+import CompleteTasks from "./CompleteTasks";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 
 interface tasks {
   id: number;
@@ -24,7 +26,7 @@ const MainComp = () => {
   const { theme, setTheme } = useTheme();
 
   //This is for the Actual Task
-  const [task, setTask] = useState<tasks[]>([]);
+  const [tasks, setTasks] = useState<tasks[]>([]);
 
   //This is for the text that is enetered in the user input field
   const [text, setText] = useState<string>("");
@@ -36,23 +38,55 @@ const MainComp = () => {
     console.log(text);
     //Setting text taken from the input field to the state variable task
     const singleTask: tasks = {
-      id: task.length + 1,
+      id: tasks.length + 1,
       taskText: text,
       isChecked: false,
     };
     console.log(singleTask);
-    setTask([...task, singleTask]);
+    setTasks([...tasks, singleTask]);
     //Setting the input field to empty string again
     setText("");
   };
-  // const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const temp = event.target.value;
-  //   const text = temp;
-  //   console.log(text);
-  // };
+  /*This fucntion deletes the task*/
   const deleteTask = (index: number) => {
-    setTask(task.filter((t) => t.id !== index));
+    setTasks(tasks.filter((task) => task.id !== index));
   };
+
+  /**This function marks the task as checked */
+  const checkTheTask = (id: number) => {
+    setTasks(
+      tasks.map((task) => {
+        if (task.id === id) {
+          return {
+            ...task,
+            isChecked: true,
+          };
+        } else {
+          return task;
+        }
+      })
+    );
+  };
+  /**Function to unCheck the task */
+  const unCheckTheTask = (id: number) => {
+    setTasks(
+      tasks.map((task) => {
+        if (task.id === id) {
+          return {
+            ...task,
+            isChecked: false,
+          };
+        } else {
+          return task;
+        }
+      })
+    );
+  };
+
+  const unCheckedTasks = tasks.filter((task) => task.isChecked !== true);
+  const checkedTasks = tasks.filter((task) => task.isChecked !== false);
+  console.log(tasks);
+  console.log(checkedTasks);
 
   return (
     <div className={theme}>
@@ -61,7 +95,7 @@ const MainComp = () => {
           <form
             method="post"
             onSubmit={handleSubmit}
-            className="mt-20 w-1/2 flex items-center gap-x-4">
+            className="mt-20 w-4/5 md:w-1/2 flex items-center gap-x-4">
             <Input
               type="text"
               value={text}
@@ -75,10 +109,32 @@ const MainComp = () => {
               Task+
             </Button>
           </form>
-          {task.length > 0 &&
-            task.map((task, i) => (
-              <TaskToDo {...task} deleteFunction={deleteTask} />
-            ))}
+          <Tabs defaultValue="InComplete" className="w-4/5 md:w-1/2">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="InComplete">InComplete</TabsTrigger>
+              <TabsTrigger value="Complete">Complete</TabsTrigger>
+            </TabsList>
+            <TabsContent value="InComplete">
+              {tasks.length > 0 &&
+                unCheckedTasks.map((task, i) => (
+                  <TaskToDo
+                    {...task}
+                    deleteFunction={deleteTask}
+                    checkTask={checkTheTask}
+                  />
+                ))}
+            </TabsContent>
+            <TabsContent value="Complete">
+              {tasks.length > 0 &&
+                checkedTasks.map((task, i) => (
+                  <CompleteTasks
+                    {...task}
+                    deleteFunction={deleteTask}
+                    unCheckTask={unCheckTheTask}
+                  />
+                ))}
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </div>

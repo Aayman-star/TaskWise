@@ -1,24 +1,24 @@
 import React from "react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { FcCheckmark } from "react-icons/fc";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { FcUndo } from "react-icons/fc";
+import { FaUndo } from "react-icons/fa";
 
 interface TaskProps {
   id: number;
   taskText: string;
   isChecked: boolean;
   deleteFunction: (id: number) => void;
-  checkTask: (id: number) => void;
+  unCheckTask: (id: number) => void;
 }
 
-const TaskToDo = ({
+const CompleteTasks = ({
   id,
   taskText,
   isChecked,
   deleteFunction,
-  checkTask,
+  unCheckTask,
 }: TaskProps) => {
   return (
     <>
@@ -31,8 +31,8 @@ const TaskToDo = ({
                 size="sm"
                 variant="secondary"
                 className="shadow-sm"
-                onClick={() => checkTask(id)}>
-                <FcCheckmark className="font-bold text-2xl" />
+                onClick={() => unCheckTask(id)}>
+                <FaUndo className="font-normal text-lg text-green-500" />
               </Button>
               <Button
                 size="sm"
@@ -49,4 +49,4 @@ const TaskToDo = ({
   );
 };
 
-export default TaskToDo;
+export default CompleteTasks;

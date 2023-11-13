@@ -11,7 +11,7 @@ const Header = () => {
   const [isOn, setIsOn] = useState(false);
   return (
     <div className="bg-background w-full p-4 md:mx-auto max-w-7xl border-b border-2-foreground flex items-center justify-between">
-      <p>This is the header</p>
+      <h1 className="font-extrabold text-xl md:text-2xl">TaskWise</h1>
 
       <Button
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
