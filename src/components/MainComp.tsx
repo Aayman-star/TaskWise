@@ -116,21 +116,23 @@ const MainComp = () => {
             </TabsList>
             <TabsContent value="InComplete">
               {tasks.length > 0 &&
-                unCheckedTasks.map((task, i) => (
+                unCheckedTasks.map((task, id) => (
                   <TaskToDo
                     {...task}
                     deleteFunction={deleteTask}
                     checkTask={checkTheTask}
+                    key={id}
                   />
                 ))}
             </TabsContent>
             <TabsContent value="Complete">
               {tasks.length > 0 &&
-                checkedTasks.map((task, i) => (
+                checkedTasks.map((task, id) => (
                   <CompleteTasks
                     {...task}
                     deleteFunction={deleteTask}
                     unCheckTask={unCheckTheTask}
+                    key={id}
                   />
                 ))}
             </TabsContent>
