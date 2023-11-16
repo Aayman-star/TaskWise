@@ -16,6 +16,7 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import TaskToDo from "./TaskToDo";
 import CompleteTasks from "./CompleteTasks";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import MyDate from "./MyDate";
 
 interface tasks {
   id: number;
@@ -91,11 +92,16 @@ const MainComp = () => {
   return (
     <div className={theme}>
       <div className="bg-background w-full min-h-screen md:max-w-7xl mx-auto border-r border-l border-2-foreground">
-        <div className="flex flex-col items-center gap-4 md:gap-6 md:mb-10">
+        <div className="flex flex-col items-center gap-4 md:gap-y-2 md:mb-10">
+          <div className="mt-6 p-2">
+            {" "}
+            <MyDate />
+          </div>
+
           <form
             method="post"
             onSubmit={handleSubmit}
-            className="mt-20 w-4/5 md:w-1/2 flex items-center gap-x-4">
+            className="mt-10 w-4/5 md:w-1/2 flex items-center gap-x-4">
             <Input
               type="text"
               value={text}
