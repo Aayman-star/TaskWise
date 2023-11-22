@@ -92,7 +92,7 @@ const MainComp = () => {
   return (
     <div className={theme}>
       <div className="bg-background w-full min-h-screen md:max-w-7xl mx-auto border-r border-l border-2-foreground">
-        <div className="flex flex-col items-center gap-4 md:gap-y-2 md:mb-10">
+        <div className="flex flex-col items-center gap-4 md:gap-y-4 md:mb-10">
           <div className="mt-6 p-2">
             {" "}
             <MyDate />

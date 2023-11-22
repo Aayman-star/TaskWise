@@ -17,6 +17,9 @@ module.exports = {
       },
     },
     extend: {
+      backgroundImage: {
+        'hero-pattern':"url('/floating-cogs.svg')"
+       },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
