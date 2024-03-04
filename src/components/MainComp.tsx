@@ -17,22 +17,30 @@ import TaskToDo from "./TaskToDo";
 import CompleteTasks from "./CompleteTasks";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import MyDate from "./MyDate";
+import { fetchTasks, sendTask, deleteTask } from "@/app/data/data";
 
 interface tasks {
   id: number;
   taskText: string;
   isChecked: boolean;
 }
+type newTask = {
+  id: number;
+  tasktext: string;
+  is_complete: boolean;
+  created_at: Date;
+};
 const MainComp = () => {
   const { theme, setTheme } = useTheme();
 
   //This is for the Actual Task
   const [tasks, setTasks] = useState<tasks[]>([]);
+  const [newTasks, setNewTasks] = useState<newTask[]>([]);
 
   //This is for the text that is enetered in the user input field
   const [text, setText] = useState<string>("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     //This function prevents the page from reloading
     e.preventDefault();
     //This is just displaying the text in the console
@@ -47,10 +55,17 @@ const MainComp = () => {
     setTasks([...tasks, singleTask]);
     //Setting the input field to empty string again
     setText("");
+    const res = await sendTask(text);
+    console.log(res);
+    await fetchTodos();
   };
   /*This fucntion deletes the task*/
-  const deleteTask = (index: number) => {
-    setTasks(tasks.filter((task) => task.id !== index));
+  const deleteTask = async (index: number) => {
+    //setTasks(tasks.filter((task) => task.id !== index));
+    console.log(index);
+    const res = await deleteTask(index);
+    console.log(res);
+    await fetchTodos();
   };
 
   /**This function marks the task as checked */
@@ -60,7 +75,7 @@ const MainComp = () => {
         if (task.id === id) {
           return {
             ...task,
-            isChecked: true,
+            is_complete: true,
           };
         } else {
           return task;
@@ -83,11 +98,21 @@ const MainComp = () => {
       })
     );
   };
-
-  const unCheckedTasks = tasks.filter((task) => task.isChecked !== true);
-  const checkedTasks = tasks.filter((task) => task.isChecked !== false);
-  console.log(tasks);
-  console.log(checkedTasks);
+  const fetchTodos = async () => {
+    const todos = await fetchTasks();
+    /**For debugging purpose */
+    // console.log(`I AM HERE IN THE MAIN COMP`);
+    // console.log(todos);
+    setNewTasks(todos);
+  };
+  useEffect(() => {
+    fetchTodos();
+  }, []);
+  const unCheckedTasks = newTasks.filter((task) => task.is_complete !== true);
+  // const unCheckedTasks = newTasks;
+  const checkedTasks = newTasks.filter((task) => task.is_complete !== false);
+  // console.log(tasks);
+  // console.log(checkedTasks);
 
   return (
     <div className={theme}>
@@ -121,7 +146,7 @@ const MainComp = () => {
               <TabsTrigger value="Complete">Complete</TabsTrigger>
             </TabsList>
             <TabsContent value="InComplete">
-              {tasks.length > 0 &&
+              {newTasks.length > 0 &&
                 unCheckedTasks.map((task, id) => (
                   <TaskToDo
                     {...task}
@@ -132,7 +157,7 @@ const MainComp = () => {
                 ))}
             </TabsContent>
             <TabsContent value="Complete">
-              {tasks.length > 0 &&
+              {newTasks.length > 0 &&
                 checkedTasks.map((task, id) => (
                   <CompleteTasks
                     {...task}

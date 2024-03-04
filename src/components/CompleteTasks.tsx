@@ -7,16 +7,18 @@ import { FaUndo } from "react-icons/fa";
 
 interface TaskProps {
   id: number;
-  taskText: string;
-  isChecked: boolean;
+  tasktext: string;
+  is_complete: boolean;
+  created_at: Date;
   deleteFunction: (id: number) => void;
   unCheckTask: (id: number) => void;
 }
 
 const CompleteTasks = ({
   id,
-  taskText,
-  isChecked,
+  tasktext,
+  is_complete,
+  created_at,
   deleteFunction,
   unCheckTask,
 }: TaskProps) => {
@@ -25,7 +27,7 @@ const CompleteTasks = ({
       <div key={id} className="w-full">
         <Card className="w-full self-start px-2 py-1 shadow-sm mb-2">
           <div className="flex items-center justify-between">
-            <div>{taskText}</div>
+            <div>{tasktext}</div>
             <div className="flex items-center gap-x-2">
               <Button
                 size="sm"
