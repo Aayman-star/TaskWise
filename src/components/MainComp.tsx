@@ -25,12 +25,7 @@ import {
 } from "@/app/data/data";
 import { Task } from "@/lib/schema";
 
-interface tasks {
-  id: number;
-  taskText: string;
-  isChecked: boolean;
-}
-type newTask = {
+type tasks = {
   id: number;
   tasktext: string;
   is_complete: boolean;
@@ -41,7 +36,6 @@ const MainComp = () => {
 
   //This is for the Actual Task
   const [tasks, setTasks] = useState<tasks[]>([]);
-  const [newTasks, setNewTasks] = useState<newTask[]>([]);
 
   //This is for the text that is enetered in the user input field
   const [text, setText] = useState<string>("");
@@ -91,15 +85,19 @@ const MainComp = () => {
     /**For debugging purpose */
     // console.log(`I AM HERE IN THE MAIN COMP`);
     // console.log(todos);
-    setNewTasks(todos);
+    setTasks(todos);
   };
   useEffect(() => {
     fetchTodos();
   }, []);
 
-  const unCheckedTasks = newTasks.filter((task) => task.is_complete !== true);
+  const unCheckedTasks = tasks?.length
+    ? tasks.filter((task) => task.is_complete !== true)
+    : [];
   // const unCheckedTasks = newTasks;
-  const checkedTasks = newTasks.filter((task) => task.is_complete !== false);
+  const checkedTasks = tasks?.length
+    ? tasks.filter((task) => task.is_complete !== false)
+    : [];
   // console.log(tasks);
   // console.log(checkedTasks);
 
