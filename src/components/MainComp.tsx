@@ -17,7 +17,13 @@ import TaskToDo from "./TaskToDo";
 import CompleteTasks from "./CompleteTasks";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import MyDate from "./MyDate";
-import { fetchTasks, sendTask, deleteTask } from "@/app/data/data";
+import {
+  fetchTasks,
+  sendTask,
+  deleteTask,
+  toggleTaskCompletion,
+} from "@/app/data/data";
+import { Task } from "@/lib/schema";
 
 interface tasks {
   id: number;
@@ -46,13 +52,13 @@ const MainComp = () => {
     //This is just displaying the text in the console
     console.log(text);
     //Setting text taken from the input field to the state variable task
-    const singleTask: tasks = {
-      id: tasks.length + 1,
-      taskText: text,
-      isChecked: false,
-    };
-    console.log(singleTask);
-    setTasks([...tasks, singleTask]);
+    // const singleTask: tasks = {
+    //   id: tasks.length + 1,
+    //   taskText: text,
+    //   isChecked: false,
+    // };
+    // console.log(singleTask);
+    // setTasks([...tasks, singleTask]);
     //Setting the input field to empty string again
     setText("");
     const res = await sendTask(text);
@@ -60,7 +66,7 @@ const MainComp = () => {
     await fetchTodos();
   };
   /*This fucntion deletes the task*/
-  const deleteTask = async (index: number) => {
+  const deleteTodo = async (index: number) => {
     //setTasks(tasks.filter((task) => task.id !== index));
     console.log(index);
     const res = await deleteTask(index);
@@ -69,34 +75,16 @@ const MainComp = () => {
   };
 
   /**This function marks the task as checked */
-  const checkTheTask = (id: number) => {
-    setTasks(
-      tasks.map((task) => {
-        if (task.id === id) {
-          return {
-            ...task,
-            is_complete: true,
-          };
-        } else {
-          return task;
-        }
-      })
-    );
+  const checkTheTask = async (task: Task) => {
+    const res = await toggleTaskCompletion(task);
+    // console.log(res); added for debugging
+    await fetchTodos();
   };
   /**Function to unCheck the task */
-  const unCheckTheTask = (id: number) => {
-    setTasks(
-      tasks.map((task) => {
-        if (task.id === id) {
-          return {
-            ...task,
-            isChecked: false,
-          };
-        } else {
-          return task;
-        }
-      })
-    );
+  const unCheckTheTask = async (task: Task) => {
+    const res = await toggleTaskCompletion(task);
+    /*console.log(res);* added for debugging*/
+    await fetchTodos();
   };
   const fetchTodos = async () => {
     const todos = await fetchTasks();
@@ -150,7 +138,7 @@ const MainComp = () => {
                 unCheckedTasks.map((task, id) => (
                   <TaskToDo
                     {...task}
-                    deleteFunction={deleteTask}
+                    deleteTodo={deleteTodo}
                     checkTask={checkTheTask}
                     key={id}
                   />
@@ -161,7 +149,7 @@ const MainComp = () => {
                 checkedTasks.map((task, id) => (
                   <CompleteTasks
                     {...task}
-                    deleteFunction={deleteTask}
+                    deleteFunction={deleteTodo}
                     unCheckTask={unCheckTheTask}
                     key={id}
                   />

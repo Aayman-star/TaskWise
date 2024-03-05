@@ -4,14 +4,15 @@ import { Button } from "./ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { FcCheckmark } from "react-icons/fc";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { Task } from "@/lib/schema";
 
 interface TaskProps {
   id: number;
   tasktext: string;
   is_complete: boolean;
   created_at: Date;
-  deleteFunction: (id: number) => void;
-  checkTask: (id: number) => void;
+  deleteTodo: (id: number) => void;
+  checkTask: (task: Task) => void;
 }
 
 const TaskToDo = ({
@@ -19,7 +20,7 @@ const TaskToDo = ({
   tasktext,
   is_complete,
   created_at,
-  deleteFunction,
+  deleteTodo,
   checkTask,
 }: TaskProps) => {
   /**This is for debugging */
@@ -37,14 +38,16 @@ const TaskToDo = ({
                 size="sm"
                 variant="secondary"
                 className="shadow-sm"
-                onClick={() => checkTask(id)}>
+                onClick={() =>
+                  checkTask({ id, tasktext, is_complete, created_at })
+                }>
                 <FcCheckmark className="font-bold text-2xl" />
               </Button>
               <Button
                 size="sm"
                 variant="secondary"
                 className="shadow-sm"
-                onClick={() => deleteFunction(id)}>
+                onClick={() => deleteTodo(id)}>
                 <FaRegTrashAlt className="text-red-500 font-bold text-lg" />
               </Button>
             </div>
