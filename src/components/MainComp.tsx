@@ -96,6 +96,7 @@ const MainComp = () => {
   useEffect(() => {
     fetchTodos();
   }, []);
+
   const unCheckedTasks = newTasks.filter((task) => task.is_complete !== true);
   // const unCheckedTasks = newTasks;
   const checkedTasks = newTasks.filter((task) => task.is_complete !== false);
@@ -134,7 +135,7 @@ const MainComp = () => {
               <TabsTrigger value="Complete">Complete</TabsTrigger>
             </TabsList>
             <TabsContent value="InComplete">
-              {newTasks.length > 0 &&
+              {unCheckedTasks.length > 0 ? (
                 unCheckedTasks.map((task, id) => (
                   <TaskToDo
                     {...task}
@@ -142,10 +143,15 @@ const MainComp = () => {
                     checkTask={checkTheTask}
                     key={id}
                   />
-                ))}
+                ))
+              ) : (
+                <h2 className="text-foreground font-medium">
+                  Start adding tasks to see the magic 😊
+                </h2>
+              )}
             </TabsContent>
             <TabsContent value="Complete">
-              {newTasks.length > 0 &&
+              {checkedTasks.length > 0 ? (
                 checkedTasks.map((task, id) => (
                   <CompleteTasks
                     {...task}
@@ -153,7 +159,12 @@ const MainComp = () => {
                     unCheckTask={unCheckTheTask}
                     key={id}
                   />
-                ))}
+                ))
+              ) : (
+                <h2 className="text-foreground font-medium">
+                  No completed tasks for now!
+                </h2>
+              )}
             </TabsContent>
           </Tabs>
         </div>
