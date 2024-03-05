@@ -3,14 +3,14 @@ import React, { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { buttonVariants } from "./ui/button";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/solid";
-import { Sun } from "lucide-react";
+
 import { useTheme } from "next-themes";
 import CardComponent from "./CardComponent";
 import { Card, CardContent } from "./ui/card";
 import TestText from "./TestText";
 import { RevealWrapper } from "next-reveal";
 import { Input } from "./ui/input";
-import { Check } from "lucide-react";
+
 import { FcCheckmark } from "react-icons/fc";
 import { FaRegTrashAlt } from "react-icons/fa";
 import TaskToDo from "./TaskToDo";
