@@ -115,9 +115,4 @@ export const PATCH = async (request: NextRequest) => {
     console.log((err as { message: string }).message);
   }
   return NextResponse.json({ message: "Task updated successfully" });
-  /*throw new Error("Task updated successfully");*/
-  /*return NextResponse.json({ message: "Task updated successfully" });*/
-  /*return NextResponse.json({ message: "Task updated successfully" });*/
-  /*return NextResponse.json({ message: "Task updated successfully" });*/
-  /*return NextResponse.json({ message: "Task updated successfully" });*/
 };
