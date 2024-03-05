@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { FcUndo } from "react-icons/fc";
 import { FaUndo } from "react-icons/fa";
+import { Task } from "@/lib/schema";
 
 interface TaskProps {
   id: number;
@@ -11,7 +12,7 @@ interface TaskProps {
   is_complete: boolean;
   created_at: Date;
   deleteFunction: (id: number) => void;
-  unCheckTask: (id: number) => void;
+  unCheckTask: (task: Task) => void;
 }
 
 const CompleteTasks = ({
@@ -33,7 +34,9 @@ const CompleteTasks = ({
                 size="sm"
                 variant="secondary"
                 className="shadow-sm"
-                onClick={() => unCheckTask(id)}>
+                onClick={() =>
+                  unCheckTask({ id, tasktext, is_complete, created_at })
+                }>
                 <FaUndo className="font-normal text-lg text-green-500" />
               </Button>
               <Button
