@@ -94,3 +94,30 @@ export const DELETE = async (request: NextRequest) => {
     );
   }
 };
+/**This is a patch function to  update the is_complete status of the task */
+export const PATCH = async (request: NextRequest) => {
+  const req = await request.json();
+  try {
+    if (req.id) {
+      const res = await db
+        .update(taskTable)
+        .set({ is_complete: !req.is_complete })
+        .where(eq(taskTable.id, req.id))
+        .returning();
+      return NextResponse.json({
+        message: "Task updated successfully",
+        data: res,
+      });
+    } else {
+      return NextResponse.json({ message: "Please enter a task" });
+    }
+  } catch (err) {
+    console.log((err as { message: string }).message);
+  }
+  return NextResponse.json({ message: "Task updated successfully" });
+  /*throw new Error("Task updated successfully");*/
+  /*return NextResponse.json({ message: "Task updated successfully" });*/
+  /*return NextResponse.json({ message: "Task updated successfully" });*/
+  /*return NextResponse.json({ message: "Task updated successfully" });*/
+  /*return NextResponse.json({ message: "Task updated successfully" });*/
+};
