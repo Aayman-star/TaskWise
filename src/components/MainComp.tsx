@@ -145,7 +145,7 @@ const MainComp = () => {
                   />
                 ))
               ) : (
-                <h2 className="text-foreground font-medium">
+                <h2 className="text-foreground font-medium text-center p-2">
                   Start adding tasks to see the magic 😊
                 </h2>
               )}
@@ -161,7 +161,7 @@ const MainComp = () => {
                   />
                 ))
               ) : (
-                <h2 className="text-foreground font-medium">
+                <h2 className="text-foreground font-medium text-center p-2">
                   No completed tasks for now!
                 </h2>
               )}
