@@ -34,3 +34,18 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Updates
+
+This is a basic task app,which has the following functions at the moment:
+
+- Add the task
+- Delete the task
+- Check the task
+- Uncheck the task
+
+The entire application is made with nextjs and typescript,with shadcn used for styling the front-end. the back-end functionality is implemented with rest api in typescript. One of the merits of nextjs is the ease of back-end development.since the api folder is housed in the app folder.
+
+## Database
+
+Vercel postgres database is used for storing the data.
