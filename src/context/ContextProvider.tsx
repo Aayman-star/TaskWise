@@ -39,8 +39,8 @@ const ContextProvider = ({ children }: ContextProviderProps) => {
   useEffect(() => {
     if (isSignedIn && isLoaded && user) {
       fetchTasksFromdb(user?.id);
-      setSignedIn(true);
     }
+    setSignedIn(true);
     setIsLoading(false);
   }, [isSignedIn, user]);
   //? Adding task to the Array
