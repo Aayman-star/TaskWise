@@ -9,23 +9,27 @@ import { sql } from "@vercel/postgres";
  */
 type task = {
   id: number;
+  user_id: string;
   tasktext: string;
   is_complete: boolean;
   created_At: Date;
 };
 export const GET = async (request: NextRequest) => {
+  const req = request.nextUrl;
+  const user_id = req.searchParams.get("user_id") as string;
   try {
-    await sql`CREATE TABLE IF NOT EXISTS tasktable(id serial,tasktext text,is_complete boolean,created_at timestamp)`;
-    const todos: Array<Task> = await db
-      .select()
-      .from(taskTable)
-      .orderBy(asc(taskTable.id));
-
-    //console.log(todos);
-    if (todos.length) {
-      return NextResponse.json({ todos }, { status: 200 });
-    } else {
-      return NextResponse.json({ message: "No todos at the moment" });
+    if (user_id) {
+      const todos: Array<Task> = await db
+        .select()
+        .from(taskTable)
+        .where(eq(taskTable.user_id, user_id))
+        .orderBy(asc(taskTable.id));
+      //console.log(todos);
+      if (todos.length) {
+        return NextResponse.json({ todos }, { status: 200 });
+      } else {
+        return NextResponse.json({ message: "No todos at the moment" });
+      }
     }
   } catch (err) {
     console.log((err as { message: string }).message);
@@ -40,10 +44,11 @@ export const POST = async (request: NextRequest) => {
   const req = await request.json();
   try {
     /**Check if the user has sent the task text */
-    if (req.tasktext) {
+    if (req.user_id && req.tasktext) {
       const res = await db
         .insert(taskTable)
         .values({
+          user_id: req.user_id,
           tasktext: req.tasktext,
           is_complete: false,
           created_at: new Date(),
@@ -80,11 +85,7 @@ export const DELETE = async (request: NextRequest) => {
         { status: 200 }
       );
     } else {
-      if ("product_id") {
-        throw new Error(`Login required to procees`);
-      } else {
-        throw new Error(`Product not found`);
-      }
+      throw new Error(`Todo not found`);
     }
   } catch (error) {
     console.log(error);
@@ -94,25 +95,31 @@ export const DELETE = async (request: NextRequest) => {
     );
   }
 };
-/**This is a patch function to  update the is_complete status of the task */
+
 export const PATCH = async (request: NextRequest) => {
   const req = await request.json();
+  const id = req.id;
+  const user_id = req.user_id;
+  console.log("IN THE PATCH FUNCTION", req);
   try {
-    if (req.id) {
+    if (id && user_id) {
       const res = await db
         .update(taskTable)
         .set({ is_complete: !req.is_complete })
-        .where(eq(taskTable.id, req.id))
+        .where(eq(taskTable.id, id))
         .returning();
+
       return NextResponse.json({
         message: "Task updated successfully",
         data: res,
       });
     } else {
-      return NextResponse.json({ message: "Please enter a task" });
+      return NextResponse.json({ message: "Task not found" });
     }
   } catch (err) {
-    console.log((err as { message: string }).message);
+    console.error((err as { message: string }).message);
+    return NextResponse.json({
+      message: "An error occurred while updating the task",
+    });
   }
-  return NextResponse.json({ message: "Task updated successfully" });
 };

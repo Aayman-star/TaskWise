@@ -2,34 +2,37 @@
 
 type todo = {
   id: number;
+  user_id?: string;
   tasktext: string;
   is_complete: boolean;
-  created_at: Date;
+  created_at?: Date;
 };
 
 /**This function is to fetch data from the api at the backend */
-export const fetchTasks = async () => {
+export const fetchTasks = async (user_id: string) => {
   try {
-    const response = await fetch("/api/tasks", { method: "GET" });
+    const response = await fetch(`/api/tasks?user_id=${user_id}`, {
+      method: "GET",
+    });
     if (!response.ok) {
       throw new Error("HTTP status " + response.status);
     }
     /**Extracting the todos array from the received data */
     const { todos } = await response.json();
-    console.log(`THIS IS THE RECEIVED DAT`, todos);
+    // console.log(`THIS IS THE RECEIVED DAT`, todos);
     return todos;
   } catch (error) {
     console.error("Error:", error);
   }
 };
 
-export const sendTask = async (taskText: string) => {
+export const sendTask = async (user_id: string, taskText: string) => {
   const response = await fetch("/api/tasks", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ tasktext: taskText }),
+    body: JSON.stringify({ user_id: user_id, tasktext: taskText }),
   });
 
   if (!response.ok) {
@@ -41,10 +44,10 @@ export const sendTask = async (taskText: string) => {
   return data;
 };
 
-export const deleteTask = async (id: number) => {
+export const deleteTaskFromDb = async (id: number, user_id: string) => {
   console.log("IN THE DATA FILE", id);
   try {
-    const response = await fetch(`/api/tasks?id=${id}`, {
+    const response = await fetch(`/api/tasks?id=${id}&user_id=${user_id}`, {
       method: "DELETE",
     });
 
@@ -67,17 +70,19 @@ export const deleteTask = async (id: number) => {
 // Function to toggle the 'is_complete' status of a task
 export const toggleTaskCompletion = async (task: todo) => {
   try {
-    const response = await fetch("/api/tasks", {
+    const response = await fetch(`/api/tasks`, {
       // Replace '/api/task' with your actual API route
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        // Include the created_at property from the task object
         id: task.id,
+        user_id: task.user_id,
         tasktext: task.tasktext,
         is_complete: task.is_complete,
-        created_at: task.created_at, // Include the created_at property from the task object
+        created_at: task.created_at,
       }),
     });
 
@@ -86,7 +91,7 @@ export const toggleTaskCompletion = async (task: todo) => {
     }
 
     const result = await response.json();
-    console.log(result.message); // Log the message from the server
+    // console.log(result.message, result.data); // Log the message from the server
   } catch (error) {
     console.error("There was a problem with the fetch operation:", error);
   }

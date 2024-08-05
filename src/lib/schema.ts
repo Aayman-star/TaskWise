@@ -12,6 +12,7 @@ import {
 import { InferSelectModel, InferInsertModel } from "drizzle-orm";
 export const taskTable = pgTable("tasktable", {
   id: serial("id").primaryKey(),
+  user_id: varchar("user_id", { length: 255 }).notNull(),
   tasktext: text("tasktext").notNull(),
   is_complete: boolean("is_complete").default(false).notNull(),
   created_at: timestamp("created_at").defaultNow().notNull(),
