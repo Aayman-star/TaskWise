@@ -76,8 +76,8 @@ const MainComp = () => {
                 </span>
               </TabsTrigger>
             </TabsList>
-            {isLoading ? (
-              <p className="text-3xl text-center">Waiting for data...</p>
+            {isLoading && signedIn ? (
+              <p className="text-center">Waiting for data...</p>
             ) : (
               <TabsContent value="InComplete">
                 {unCheckedTasks.length > 0 ? (
