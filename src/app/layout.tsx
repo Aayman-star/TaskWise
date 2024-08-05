@@ -1,15 +1,28 @@
 //import ThemeProvider from "next-themes";
 import "./globals.css";
 import type { Metadata } from "next";
-import Footer from "@/components/Footer";
-import MainComp from "@/components/MainComp";
 import ThemeProvider from "@/components/ThemeProvider";
 import ContextProvider from "@/context/ContextProvider";
 import { ClerkProvider, ClerkLoading } from "@clerk/nextjs";
-import { robotoSlab, montserrat } from "@/lib/fonts";
+import { montserrat } from "@/lib/fonts";
 export const metadata: Metadata = {
+  metadataBase: new URL("https://task-wise-alpha.vercel.app/"),
   title: "TaskWise",
   description: "Your Wise Companion",
+  openGraph: {
+    title: "TaskWise",
+    description: "Your Wise Companion",
+    url: "https://task-wise-alpha.vercel.app/",
+    siteName: "TaskWise",
+    locale: "en_US",
+    type: "website",
+    images: "/opengraph-image.png",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TaskWise",
+    description: "Your Wise Companion",
+  },
 };
 
 export default function RootLayout({
