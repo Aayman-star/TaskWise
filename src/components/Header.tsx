@@ -29,7 +29,10 @@ const Header = () => {
           {theme === "dark" ? <Sun /> : <Moon />}
         </Button>
         <div>
-          {user ? <SignedIn></SignedIn> : <SignInButton mode="modal" />}
+          <SignedOut>
+            <SignInButton mode="modal" />
+          </SignedOut>
+
           <SignedIn>
             <div className="flex items-center justify-end">
               <p className="px-2"> {capitalizeFirstLetter(user?.username)}</p>

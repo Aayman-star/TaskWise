@@ -105,3 +105,14 @@
     --chart-5: 340 75% 55%;
   }
 }
+
+/*Removing the clerk logo*/
+.cl-internal-16vtwdp {
+  @apply hidden;
+}
+.cl-internal-y44tp9 {
+  @apply hidden;
+}
+.cl-internal-1dauvpw {
+  @apply hidden;
+}
