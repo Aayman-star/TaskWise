@@ -48,7 +48,15 @@ const MainComp = () => {
 
           <form
             method="post"
-            onSubmit={handleSubmit}
+            // onSubmit={handleSubmit}
+            onSubmit={(e) => {
+              if (!text.trim()) {
+                e.preventDefault();
+                alert("Please enter a task.");
+              } else {
+                handleSubmit(e);
+              }
+            }}
             className="mt-10 w-4/5 md:w-1/2 flex items-center gap-x-4">
             <Input
               type="text"
