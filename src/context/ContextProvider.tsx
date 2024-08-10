@@ -26,21 +26,29 @@ const ContextProvider = ({ children }: ContextProviderProps) => {
 
   //? Handling with the database
   const fetchTasksFromdb = async (id: string) => {
-    const data: Array<Task> = await fetchTasks(id);
-    if (data) {
-      // console.log("Tasks Array:", data);
-    } else {
-      console.log("No Data");
+    try {
+      const data: Array<Task> = await fetchTasks(id);
+      if (data?.length) {
+        // console.log("Tasks Array:", data);
+        const tempTasks = data?.length ? data : [];
+        setTasks(tempTasks);
+      } else {
+        setTasks([]);
+        console.log("No Data");
+      }
+    } catch (error) {
+      console.log("Error fetching data", error);
+    } finally {
+      setIsLoading(false);
     }
-    const tempTasks = data?.length ? data : [];
+
     // console.log(tempTasks);
-    setTasks(tempTasks);
   };
   useEffect(() => {
     if (isSignedIn && isLoaded && user) {
       fetchTasksFromdb(user?.id);
       setSignedIn(true);
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   }, [isSignedIn, user]);
   //? Adding task to the Array
